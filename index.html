@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="Caio Vinícius">
+        <meta name="description" content="To-do List simples e manipulável. Feita com Javascript">
+        <meta name="keywords" content="todo, list, javascript, projeto">
+
+        <title>To-Do List</title>
+
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <!-- Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="assets/favicon.ico?v=1" type="image/x-icon">
+        <!-- Stylesheet -->
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+
+        <div class="content">
+            <h2 class="title">ToDo List &#9989;</h2>
+            <div class="todo">
+                <input type="text" id="inputNewTask" placeholder="Adicionar nova tarefa...">
+                <button id="btnAddTask">
+                    <i class="fa fa-plus"></i>
+                </button>
+            </div>
+        
+            <ul id="taskList">
+            </ul>
+        </div>
+
+        <div id="editWindow">
+            <button id="editWindowBtnClose">
+                <i class="fa fa-remove fa-2x"></i>
+            </button>
+            <h2 id="editTaskId">#1021</h2>
+            <hr>
+            <form>
+                <div class="form-line">
+                    <label for="name">Nome</label>
+                    <input type="text" id="inputTaskEditName">
+                </div>
+                <div class="form-line">
+                    <button id="btnUpdateTask">Salvar</button>
+                </div>
+            </form>
+        </div>
+        <div id="backgroundEditWindow"></div>
+        <footer>Desenvolvido por Caio Vinícius &#129312;</footer>
+
+        <script src="script/script.js"></script>
+    </body>
+</html>
