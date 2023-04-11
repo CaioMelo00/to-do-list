@@ -4,7 +4,7 @@
 
 ## Descrição
 
-<p align="center">Projeto de uma To-Do List para front-end. O programa permite a criação, leitura, edição e exclusão de tarefas.</p>
+<p align="center">Projeto de uma To-Do List para o LTD (Laboratório de Transformação Digital). O programa permite a criação, leitura, edição e exclusão de tarefas.</p>
 
 ## Índice
 <p align="center">
