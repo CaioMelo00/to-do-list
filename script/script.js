@@ -8,11 +8,20 @@ const editWindowBtnClose = document.querySelector("#editWindowBtnClose");
 const btnUpdateTask = document.querySelector("#btnUpdateTask");
 const editTaskId = document.querySelector("#editTaskId");
 const inputTaskEditName = document.querySelector("#inputTaskEditName");
+const KEY_CODE_ENTER = 13;
+const KEY_LOCAL_STORAGE = 'tasksList';
+let dbTasks = [];
 
-// Manipulação de evento para quando o botão Enter do teclado for pressionado
+// Chamada de funções 
+obtainTasksLocalStorage();
+renderTaskListHtml();
+
+
+/* Manipulação de evento para quando o botão Enter do teclado for pressionado
+chamar KEY_CODE_ENTER*/
 inputNewTask.addEventListener('keypress', (e) => {
 
-    if(e.keyCode == 13) {
+    if(e.keyCode == KEY_CODE_ENTER) {
         let task = {
             name: inputNewTask.value,
             id: createId(),
@@ -21,12 +30,14 @@ inputNewTask.addEventListener('keypress', (e) => {
     }
 });
 
-// Manipulação de visualização de telas de edição ao clicar no botão de saída
+/* Manipulação de visualização de telas de edição ao clicar
+no botão editWindowBtnClose*/
 editWindowBtnClose.addEventListener('click', (e) => {
     alternateEditWindow();
 });
 
-// Manipulação de evento para quando o botão de adicionar tarefa for clicado
+/* Manipulação de evento para quando o botão btnAddTask for clicado,
+criar um novo task e adicionar um item à lista*/
 btnAddTask.addEventListener('click', (e) => {
  
     let task = {
@@ -51,6 +62,11 @@ btnUpdateTask.addEventListener('click', (e) => {
     let currentTask = document.getElementById(''+taskId+'');
 
     if(currentTask) {
+
+        const taskIndex = obtainTaskIndexById(taskId);
+        dbTasks[taskIndex] = task;
+        saveTasksLocalStorage();
+
         let li = createTagLi(task);
         taskList.replaceChild(li, currentTask);
         alternateEditWindow();
@@ -69,10 +85,10 @@ function addTask(task) {
     if (inputNewTask.value == '') {
         alert('Adicione uma tarefa');
     } else {
-        let li = createTagLi(task);
-        taskList.appendChild(li);
-        inputNewTask.value = '';
-    } 
+        dbTasks.push(task);
+        saveTasksLocalStorage(dbTasks);
+        renderTaskListHtml();
+    }
 }
 
 // Função que cria elementos HTML e retorna um item
@@ -121,6 +137,11 @@ function editing(taskId) {
 function deleting(taskId) {
     let confirmation = window.confirm('Tem certeza que deseja excluir? ');
     if (confirmation) {
+
+        const taskIndex = obtainTaskIndexById(taskId);
+        dbTasks.splice(taskIndex, 1);
+        saveTasksLocalStorage();
+
         let li = document.getElementById('' + taskId + '');
         if(li) {
             taskList.removeChild(li);
@@ -134,4 +155,36 @@ function deleting(taskId) {
 function alternateEditWindow() {
     editWindow.classList.toggle('open');
     backgroundEditWindow.classList.toggle('open');
+}
+
+/* Função que recolhe a posição da taskId no índice e 
+retorna a informação */
+function obtainTaskIndexById(taskId) {
+    const taskIndex = dbTasks.findIndex(t => t.id == taskId);
+    if(taskIndex < 0) {
+        throw new Error('Id da tarefa não encontrado: ', taskId);
+    }
+    return taskIndex;
+}
+
+// Função que 
+function renderTaskListHtml() {
+    taskList.innerHTML = '';
+    for(let i=0; i < dbTasks.length; i++) {
+        let li = createTagLi(dbTasks[i]);
+        taskList.appendChild(li); 
+    } 
+    inputNewTask.value = '';  
+}
+
+// Função que salva as tarefas atuais no localStorage
+function saveTasksLocalStorage() {
+    localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(dbTasks));
+}
+
+// Função que recebe as tarefas que constam salvas no localStorage
+function obtainTasksLocalStorage() {
+    if(localStorage.getItem(KEY_LOCAL_STORAGE)) {
+        dbTasks = JSON.parse(localStorage.getItem(KEY_LOCAL_STORAGE));
+    }  
 }
